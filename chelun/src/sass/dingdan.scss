@@ -141,7 +141,22 @@
       }
     }
   }
-  
+  .mint-popup {
+    width:100%;
+  }
+  .picker-slot {
+    background: #ddd;
+  }
+  .usi-btn-sure{
+    height:.7rem;
+    text-align: end;
+    padding:0 .2rem;
+    box-sizing: border-box;
+    color:blue;
+    line-height: .7rem;
+    font-size:.3rem;
+    background: #eee;
+  }
   .foot{
     width:100%;
     height:1rem;

@@ -15,8 +15,8 @@
       <div class="camera_one"><i class="icon iconfont icon-zhaoxiang"></i><p>白底半身照</p></div>
     </div>
     <div class="list">
-      <div class="list_one"><div class="left">服务类型</div><div class="right">换驾照<i class="icon iconfont icon-xiangyou"></i></div></div>
-      <div class="list_one"><div class="left">当前驾照签发城市<i class="icon iconfont icon-wenhao_huabanfuben"></i></div><div class="right"><input type="text" placeholder="请选择签发地"></div></div>
+      <div class="list_one"><div class="left">服务类型</div><div class="right" @click="changebook">换驾照<i class="icon iconfont icon-xiangyou"></i></div></div>
+      <div class="list_one"><div class="left">当前驾照签发城市<i class="icon iconfont icon-wenhao_huabanfuben"></i></div><div class="right"><input @focus="WriteCity" type="text" placeholder="请选择签发地"></div></div>
       <div class="list_one"><div class="left">可补换的签发城市<i class="icon iconfont icon-wenhao_huabanfuben"></i></div><div class="right"><input type="text" placeholder="请选择补换地"></div></div>
     <div class="list_one" style="border:0"><div class="left">服务费</div><div class="right"><b>￥399</b></div></div>
     </div>
@@ -42,20 +42,35 @@
     <div class="mask_camera">
         <mt-actionsheet
         :actions="actions"
-        :style="flag"
+        v-model="sheetVisible"
         closeOnClickModal=true>
       </mt-actionsheet>
+    </div>
+    <div class="tab_book">
+        <!-- <mt-picker :slots="slots" @change="onValuesChange"></mt-picker> -->
+        <mt-popup
+        v-model="popupVisible"
+  position="bottom">
+  <div class="picker-toolbar-title">
+    <div class="usi-btn-sure" @click="popupVisible = !popupVisible">完成</div>
+  </div>
+  <mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
+</mt-popup>
     </div>
   </div>
 </template>
 <script>
-  //引入mint-ui轮播样式
+  //引入样式
   import '../../node_modules/mint-ui/lib/style.css'
-  import { Swipe, SwipeItem, Actionsheet } from 'mint-ui';
+  import '../../node_modules/mint-ui/lib/actionsheet/index.js'
+  import { Swipe, SwipeItem, Actionsheet, Popup, Picker} from 'mint-ui';
   import Vue from 'vue';
+
   Vue.component(Swipe.name, Swipe);
   Vue.component(SwipeItem.name, SwipeItem);
   Vue.component(Actionsheet.name, Actionsheet);
+  Vue.component(Picker.name, Picker);
+  Vue.component(Popup.name, Popup);
   //引入sass
   import '../sass/dingdan.scss'
   export default {
@@ -64,19 +79,46 @@
       return {
         actions:[{
           name:"拍照",
-          method:""
+          method:this.Photograph
         },{
           name:"相册",
-          method:""
+          method:this.Album
         }],
-        flag:"display:none"
+        sheetVisible:false,
+        popupVisible:true,
+        slots: [
+        {
+          flex: 1,
+          values: ['补驾照', '换驾照'],
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ]
       }
     },
     methods:{
       CameraParentFn(e){
         e.stopPropagation();
-        console.log(e.target)
-        this.flag=this.flag==="display:none"?"display:block":"display:none"
+        this.sheetVisible=true
+      },
+      Photograph(){
+        console.log("拍照")
+      },
+      Album(){
+        console.log("相册")
+      },
+      changebook(e){
+        e.stopPropagation();
+        console.log(8)
+        this.popupVisible=true
+      },
+      onValuesChange(picker, values) {
+      if (values[0] > values[1]) {
+        picker.setSlotValue(1, values[0]);
+        }
+      },
+      WriteCity(){
+        console.log(233)
       }
     }
   }
