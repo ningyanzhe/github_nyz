@@ -17,7 +17,7 @@
     <div class="list">
       <div class="list_one"><div class="left">服务类型</div><div class="right" @click="changebook">换驾照<i class="icon iconfont icon-xiangyou"></i></div></div>
       <div class="list_one"><div class="left">当前驾照签发城市<i class="icon iconfont icon-wenhao_huabanfuben"></i></div><div class="right"><input @focus="WriteCity" type="text" placeholder="请选择签发地"></div></div>
-      <div class="list_one"><div class="left">可补换的签发城市<i class="icon iconfont icon-wenhao_huabanfuben"></i></div><div class="right"><input type="text" placeholder="请选择补换地"></div></div>
+      <div class="list_one"><div class="left">可补换的签发城市<i class="icon iconfont icon-wenhao_huabanfuben"></i></div><div class="right"><input @focus="WriteCity" type="text" placeholder="请选择补换地"></div></div>
     <div class="list_one" style="border:0"><div class="left">服务费</div><div class="right"><b>￥399</b></div></div>
     </div>
     <div class="lists">
@@ -56,6 +56,18 @@
   <mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
 </mt-popup>
     </div>
+    <div class="writecity">
+        <mt-popup
+        v-model="writecity_popupVisible"
+  position="bottom">
+  <div class="writecity_head">
+    <span></span>
+    <p>选择签发城市</p>
+    <span @click="writecity_popupVisible = !writecity_popupVisible">确定</span>
+  </div>
+  <mt-picker :slots="writecity_slots" @change="writecity_onValuesChange"></mt-picker>
+</mt-popup>
+    </div>
   </div>
 </template>
 <script>
@@ -84,7 +96,8 @@
           method:this.Album
         }],
         sheetVisible:false,
-        popupVisible:true,
+        popupVisible:false,
+        writecity_popupVisible:false,
         slots: [
         {
           flex: 1,
@@ -92,6 +105,23 @@
           className: 'slot1',
           textAlign: 'center'
         }
+      ],
+      writecity_slots:[
+        {
+          flex: 1,
+          values: ['北京', '上海','河北','河南','山东'],
+          className: 'slot1',
+          textAlign: 'left'
+        },{
+          divider: true,
+          content: '---',
+          className: 'slot2'
+        },{
+          flex: 1,
+          values: ['张家口', '廊坊','承德','沧州','秦皇岛'],
+          className: 'slot3',
+          textAlign: 'right'
+        },
       ]
       }
     },
@@ -116,8 +146,13 @@
         picker.setSlotValue(1, values[0]);
         }
       },
+      writecity_onValuesChange(picker, values) {
+      if (values[0] > values[1]) {
+        picker.setSlotValue(1, values[0]);
+        }
+      },
       WriteCity(){
-        console.log(233)
+        this.writecity_popupVisible=true
       }
     }
   }
