@@ -47,7 +47,6 @@
       </mt-actionsheet>
     </div>
     <div class="tab_book">
-        <!-- <mt-picker :slots="slots" @change="onValuesChange"></mt-picker> -->
         <mt-popup
         v-model="popupVisible"
   position="bottom">
