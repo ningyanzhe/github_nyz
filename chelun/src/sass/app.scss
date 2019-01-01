@@ -1,0 +1,61 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  display: flex;
+  flex-direction: column;
+}
+
+.head {
+  width:100%;
+  height:1rem;
+  padding:0 .2rem;
+  box-sizing: border-box;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+  font-size: .36rem;
+  position: fixed;
+  left:0;
+  top:0;
+  background: #fff;
+  i.icon{
+    font-size: .4rem;
+  }
+}
+.content {
+  width:100%;
+  flex:1;
+  margin-top:1rem;
+  .TabNav {
+    width: 100%;
+    height: .86rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: skyblue;
+    border-bottom: 1px solid #aaa;
+    border-top: 1px solid #aaa;
+    div {
+      width: 25%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+.Tabactive{
+  background: skyblue;
+  color:#fff;
+}

@@ -1,0 +1,173 @@
+.dingdan{
+  padding-bottom:1rem;
+  .swiper{
+    width:100%;
+    height:2.6rem;
+    background: green;
+    color:#fff;
+    font-size:40px;
+  }
+  .camera{
+    width:100%;
+    height:2.4rem;
+    border-bottom: 12px solid #ddd;
+    display: flex;
+    justify-content: space-around;
+    padding-top:.2rem;
+    box-sizing: border-box;
+    .camera_one{
+      width:25%;
+      height:100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      padding:.2rem .1rem;
+      box-sizing: border-box;
+      i.icon{
+        font-size:.7rem;
+      }
+      p{
+        padding:0 .1rem;
+      }
+    }
+  }
+  .list{
+    width:100%;
+    height:auto;
+    display: flex;
+    flex-direction: column;
+    padding:0 .2rem;
+    box-sizing: border-box;
+    border-bottom: 12px solid #ddd;
+    font-size:.32rem;
+    .list_one{
+      width:100%;
+      height:1rem;
+      border-bottom: 1px solid #aaa;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .right{
+        input{
+          width:1.6rem;
+          height:100%;
+          border:0;
+        }
+        b{
+          color:red;
+        }
+      }
+    }
+  }
+  .lists{
+    width:100%;
+    height:auto;
+    padding:0 .2rem;
+    box-sizing: border-box;
+    .lists_vip{
+      width:100%;
+      height:1.2rem;
+      border-bottom: 1px solid #aaa;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .left{
+        margin:0;
+        padding:0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        .span1{
+          font-weight: 800px;
+          font-size: .36rem;
+        }
+        .span2{
+          color:#aaa;
+        }
+      }
+      .right{
+        .span1{
+          color:#aaa;
+        }
+        .span2{
+          font-size: .4rem;
+          color:red;
+        }
+      }
+    }
+    .lists_marny{
+      width:100%;
+      height:1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+  .end{
+    width:100%;
+    height:3rem;
+    background: #ccc;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    .p1{
+      width:100%;
+      height:.8rem;
+      line-height: .8rem;
+      text-align: center;
+      a{
+        color:blue;
+      }
+    }
+    .p2{
+      width:100%;
+      flex:1;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding:0 .3rem;
+      box-sizing: border-box;
+      i{
+        border:3px solid #fff;
+        padding:.05rem .1rem;
+        box-sizing: border-box;
+        border-radius: 50%;
+      }
+      i.icon{
+        font-size:1rem;
+        color:red;
+      }
+    }
+  }
+  
+  .foot{
+    width:100%;
+    height:1rem;
+    border:1px solid #aaa;
+    display: flex;
+    position: fixed;
+    left:0;
+    bottom:0;
+    background: #fff;
+    font-size:.34rem;
+    .right{
+      width:2.6rem;
+      height:100%;
+      text-align: center;
+      line-height: 1rem;
+      background: #aaa;
+      color:white;
+    }
+    .left{
+      flex:1;
+      height:100%;
+      line-height: 1rem;
+      b{
+        color:red;
+        margin-left:.3rem;
+      }
+    }
+  }
+}
