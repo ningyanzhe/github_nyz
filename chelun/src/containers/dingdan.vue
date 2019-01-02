@@ -2,22 +2,22 @@
   <div class="dingdan">
     <div class="swiper">
         <mt-swipe :auto="4000">
-          <mt-swipe-item>1</mt-swipe-item>
-          <mt-swipe-item>2</mt-swipe-item>
-          <mt-swipe-item>3</mt-swipe-item>
+          <mt-swipe-item><img src="https://h5.chelun.com/2017/update-licence2-pay/img/banner@3x.png" alt=""></mt-swipe-item>
+          <mt-swipe-item><img src="https://h5.chelun.com/2017/update-licence2-pay/img/banner@3x.png" alt=""></mt-swipe-item>
+          <mt-swipe-item><img src="https://h5.chelun.com/2017/update-licence2-pay/img/banner@3x.png" alt=""></mt-swipe-item>
         </mt-swipe>
     </div>
-    <div class="camera" @click="CameraParentFn">
-      <div class="camera_one"><i class="icon iconfont icon-zhaoxiang"></i><p>身份证正面</p></div>
-      <div class="camera_one"><i class="icon iconfont icon-zhaoxiang"></i><p>身份证反面</p></div>
-      <div class="camera_one"><i class="icon iconfont icon-zhaoxiang"></i><p>驾驶证正件</p></div>
-      <div class="camera_one"><i class="icon iconfont icon-zhaoxiang"></i><p>驾驶证附件</p></div>
-      <div class="camera_one"><i class="icon iconfont icon-zhaoxiang"></i><p>白底半身照</p></div>
+    <div class="camera">
+      <div class="camera_one" @click="CameraParentFn(1)"><i class="icon iconfont icon-zhaoxiang"></i><p>身份证正面</p></div>
+      <div class="camera_one" @click="CameraParentFn(2)"><i class="icon iconfont icon-zhaoxiang"></i><p>身份证反面</p></div>
+      <div class="camera_one" @click="CameraParentFn(3)"><i class="icon iconfont icon-zhaoxiang"></i><p>驾驶证正件</p></div>
+      <div class="camera_one" @click="CameraParentFn(4)"><i class="icon iconfont icon-zhaoxiang"></i><p>驾驶证附件</p></div>
+      <div class="camera_one" @click="CameraParentFn(5)"><i class="icon iconfont icon-zhaoxiang"></i><p>白底半身照</p></div>
     </div>
     <div class="list">
-      <div class="list_one"><div class="left">服务类型</div><div class="right" @click="changebook">换驾照<i class="icon iconfont icon-xiangyou"></i></div></div>
-      <div class="list_one"><div class="left">当前驾照签发城市<i class="icon iconfont icon-wenhao_huabanfuben"></i></div><div class="right"><input @focus="WriteCity" type="text" placeholder="请选择签发地"></div></div>
-      <div class="list_one"><div class="left">可补换的签发城市<i class="icon iconfont icon-wenhao_huabanfuben"></i></div><div class="right"><input @focus="WriteCity" type="text" placeholder="请选择补换地"></div></div>
+      <div class="list_one"><div class="left">服务类型</div><div class="right" @click="changebook">{{this.tabstr}}<i class="icon iconfont icon-xiangyou"></i></div></div>
+      <div class="list_one"><div class="left">当前驾照签发城市<i class="icon iconfont icon-wenhao_huabanfuben"></i></div><div class="right"><span  @click="WriteCity">请选择签发地</span></div></div>
+      <div class="list_one"><div class="left">可补换的签发城市<i class="icon iconfont icon-wenhao_huabanfuben"></i></div><div class="right"><span  @click="WriteCity">请选择补换地</span></div></div>
     <div class="list_one" style="border:0"><div class="left">服务费</div><div class="right"><b>￥399</b></div></div>
     </div>
     <div class="lists">
@@ -68,9 +68,14 @@
   <mt-picker :slots="writecity_slots" @change="writecity_onValuesChange"></mt-picker>
 </mt-popup>
     </div>
+    <div v-if="sheetVisible==true" class="pic_mask">
+      {{this.cameraNum}}
+    </div>
   </div>
 </template>
 <script>
+  //引入辅助方法
+  import {mapState, mapGetters, mapMutations, mapActions } from 'vuex'
   //引入样式
   import '../../node_modules/mint-ui/lib/style.css'
   import '../../node_modules/mint-ui/lib/actionsheet/index.js'
@@ -97,6 +102,8 @@
         }],
         sheetVisible:false,
         popupVisible:false,
+        cameraNum:1,
+        tabstr:"换驾照",
         writecity_popupVisible:false,
         slots: [
         {
@@ -109,7 +116,7 @@
       writecity_slots:[
         {
           flex: 1,
-          values: ['北京', '上海','河北','河南','山东'],
+          values: [],
           className: 'slot1',
           textAlign: 'left'
         },{
@@ -118,17 +125,34 @@
           className: 'slot2'
         },{
           flex: 1,
-          values: ['张家口', '廊坊','承德','沧州','秦皇岛'],
+          values: [],
           className: 'slot3',
           textAlign: 'right'
         },
       ]
       }
     },
+    mounted() {
+      this.getCityList('https://chezhu.eclicks.cn/ExchangeJiaZhao/cityList')
+    },
+    computed: {
+      ...mapState({
+      CityList:(state)=>state.app.CityList,
+      S_CityList:(state)=>state.app.S_CityList
+      }),
+      ...mapGetters({
+      formatCityList:'app/formatCityList',
+      formatS_CityList:'app/formatS_CityList'
+      })
+    },
     methods:{
+      ...mapActions({
+        getCityList:"app/getCityList",
+        selectCityList:"app/selectCityList"
+      }),
       CameraParentFn(e){
-        e.stopPropagation();
         this.sheetVisible=true
+        this.cameraNum=e
       },
       Photograph(){
         console.log("拍照")
@@ -138,21 +162,26 @@
       },
       changebook(e){
         e.stopPropagation();
-        console.log(8)
         this.popupVisible=true
       },
       onValuesChange(picker, values) {
-      if (values[0] > values[1]) {
+        if (values[0] > values[1]) {
         picker.setSlotValue(1, values[0]);
         }
+        this.tabstr=values[0]
       },
       writecity_onValuesChange(picker, values) {
-      if (values[0] > values[1]) {
+        if (values[0] > values[1]) {
         picker.setSlotValue(1, values[0]);
         }
+        this.selectCityList(values[0])
+        console.log(this.formatS_CityList)
       },
       WriteCity(){
+        this.writecity_slots[0].values=this.formatCityList
         this.writecity_popupVisible=true
+        this.selectCityList('北京')
+        this.writecity_slots[2].values=this.formatS_CityList
       }
     }
   }

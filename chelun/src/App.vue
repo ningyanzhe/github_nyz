@@ -1,10 +1,5 @@
 <template>
   <div id="app">
-    <div class="head">
-      <span><i class="icon iconfont icon-fanhui"></i></span>
-      <span>补换驾照</span>
-      <span><i class="icon iconfont icon-caidan"></i></span>
-    </div>
     <div class="content">
       <div class="TabNav">
         <div class="Tabactive">提交订单</div>
