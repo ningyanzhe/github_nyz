@@ -16,7 +16,7 @@
     </div>
     <div class="list">
       <div class="list_one"><div class="left">服务类型</div><div class="right" @click="changebook">{{this.tabstr}}<i class="icon iconfont icon-xiangyou"></i></div></div>
-      <div class="list_one"><div class="left">当前驾照签发城市<i class="icon iconfont icon-wenhao_huabanfuben"></i></div><div class="right"><span  @click="WriteCity">请选择签发地</span></div></div>
+      <div class="list_one"><div class="left">当前驾照签发城市<i class="icon iconfont icon-wenhao_huabanfuben"></i></div><div class="right"><span  @click="WriteCity">{{this.write_City}}</span></div></div>
       <div class="list_one"><div class="left">可补换的签发城市<i class="icon iconfont icon-wenhao_huabanfuben"></i></div><div class="right"><span  @click="WriteCity">请选择补换地</span></div></div>
     <div class="list_one" style="border:0"><div class="left">服务费</div><div class="right"><b>￥399</b></div></div>
     </div>
@@ -69,7 +69,7 @@
 </mt-popup>
     </div>
     <div v-if="sheetVisible==true" class="pic_mask">
-      {{this.cameraNum}}
+      <img :src="this.defaultImg" alt="">
     </div>
   </div>
 </template>
@@ -102,6 +102,10 @@
         }],
         sheetVisible:false,
         popupVisible:false,
+        defaultCity:'北京',
+        hasWriteCity:false,
+        write_City:'请选择签发地',
+        defaultImg:'',
         cameraNum:1,
         tabstr:"换驾照",
         writecity_popupVisible:false,
@@ -127,7 +131,8 @@
           flex: 1,
           values: [],
           className: 'slot3',
-          textAlign: 'right'
+          textAlign: 'right',
+          defaultIndex:0
         },
       ]
       }
@@ -138,7 +143,8 @@
     computed: {
       ...mapState({
       CityList:(state)=>state.app.CityList,
-      S_CityList:(state)=>state.app.S_CityList
+      S_CityList:(state)=>state.app.S_CityList,
+      list:(state)=>state.camera.list
       }),
       ...mapGetters({
       formatCityList:'app/formatCityList',
@@ -153,6 +159,7 @@
       CameraParentFn(e){
         this.sheetVisible=true
         this.cameraNum=e
+        this.defaultImg=this.list[e-1].img
       },
       Photograph(){
         console.log("拍照")
@@ -174,8 +181,13 @@
         if (values[0] > values[1]) {
         picker.setSlotValue(1, values[0]);
         }
+       if(this.defaultCity!=values[0]){
         this.selectCityList(values[0])
-        console.log(this.formatS_CityList)
+        picker.setSlotValues(1,this.formatS_CityList)
+        if(values[0]){
+          this.write_City=values[0]+'--'+values[1]
+        }
+       }
       },
       WriteCity(){
         this.writecity_slots[0].values=this.formatCityList
