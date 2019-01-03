@@ -74,6 +74,7 @@
   </div>
 </template>
 <script>
+  import {uploadImg} from '../api/index.js';
   //引入辅助方法
   import {mapState, mapGetters, mapMutations, mapActions } from 'vuex'
   //引入样式
@@ -162,6 +163,23 @@
         this.defaultImg=this.list[e-1].img
       },
       Photograph(){
+        const type=1
+      uploadImg(type).then(res=>{
+        if (res.code == 0){
+          let src = '';
+          if (/picture.eclicks.cn/.test(res.data.image01)) {
+              src = res.data.image01.replace('http://', '//');
+          } else {
+              src = '//picture.eclicks.cn/' + res.data.image01;
+          }
+          this.updataList({
+            src,
+            index: this.list.findIndex(item=>item==this.current)
+          })
+        }else{
+          alert(res.msg);
+        }
+        })
         console.log("拍照")
       },
       Album(){
