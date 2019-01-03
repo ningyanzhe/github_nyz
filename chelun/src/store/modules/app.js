@@ -63,7 +63,9 @@ const actions={
     state.CityList.map((v)=>{
       if(v.name==action){
         if(v.list.length<=1){
-          state.S_CityList=v.list[0].list
+          let arr=[]
+          arr.push(v.list[0])
+          state.S_CityList=arr;
         }else{
           state.S_CityList=v.list
         }

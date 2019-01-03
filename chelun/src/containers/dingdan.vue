@@ -8,16 +8,16 @@
         </mt-swipe>
     </div>
     <div class="camera">
-      <div class="camera_one" @click="CameraParentFn(1)"><i class="icon iconfont icon-zhaoxiang"></i><p>身份证正面</p></div>
-      <div class="camera_one" @click="CameraParentFn(2)"><i class="icon iconfont icon-zhaoxiang"></i><p>身份证反面</p></div>
-      <div class="camera_one" @click="CameraParentFn(3)"><i class="icon iconfont icon-zhaoxiang"></i><p>驾驶证正件</p></div>
-      <div class="camera_one" @click="CameraParentFn(4)"><i class="icon iconfont icon-zhaoxiang"></i><p>驾驶证附件</p></div>
-      <div class="camera_one" @click="CameraParentFn(5)"><i class="icon iconfont icon-zhaoxiang"></i><p>白底半身照</p></div>
+      <div class="camera_one" @click="CameraParentFn(1)"><i class="icon iconfont icon-tianjia"></i><p>身份证正面</p></div>
+      <div class="camera_one" @click="CameraParentFn(2)"><i class="icon iconfont icon-tianjia"></i><p>身份证反面</p></div>
+      <div class="camera_one" @click="CameraParentFn(3)"><i class="icon iconfont icon-tianjia"></i><p>驾驶证正件</p></div>
+      <div class="camera_one" @click="CameraParentFn(4)"><i class="icon iconfont icon-tianjia"></i><p>驾驶证附件</p></div>
+      <div class="camera_one" @click="CameraParentFn(5)"><i class="icon iconfont icon-tianjia"></i><p>白底半身照</p></div>
     </div>
     <div class="list">
       <div class="list_one"><div class="left">服务类型</div><div class="right" @click="changebook">{{this.tabstr}}<i class="icon iconfont icon-xiangyou"></i></div></div>
-      <div class="list_one"><div class="left">当前驾照签发城市<i class="icon iconfont icon-wenhao_huabanfuben"></i></div><div class="right"><span  @click="WriteCity">{{this.write_City}}</span></div></div>
-      <div class="list_one"><div class="left">可补换的签发城市<i class="icon iconfont icon-wenhao_huabanfuben"></i></div><div class="right"><span  @click="WriteCity">请选择补换地</span></div></div>
+      <div class="list_one"><div class="left">当前驾照签发城市<i class="icon iconfont icon-wenhao_huabanfuben"></i></div><div class="right"><span :class="this.write_City=='请选择签发地'?'':'active'" @click="WriteCity">{{this.write_City}}</span></div></div>
+      <div class="list_one"><div class="left">可补换的签发城市<i class="icon iconfont icon-wenhao_huabanfuben"></i></div><div class="right"><span @click="WriteCity">请选择补换地</span></div></div>
     <div class="list_one" style="border:0"><div class="left">服务费</div><div class="right"><b>￥399</b></div></div>
     </div>
     <div class="lists">
@@ -62,7 +62,7 @@
   position="bottom">
   <div class="writecity_head">
     <span></span>
-    <p>选择签发城市</p>
+    <h3>选择签发城市</h3>
     <span @click="writecity_popupVisible = !writecity_popupVisible">确定</span>
   </div>
   <mt-picker :slots="writecity_slots" @change="writecity_onValuesChange"></mt-picker>
@@ -75,6 +75,7 @@
 </template>
 <script>
   import {uploadImg} from '../api/index.js';
+  import '../assets/fonts/iconfont'
   //引入辅助方法
   import {mapState, mapGetters, mapMutations, mapActions } from 'vuex'
   //引入样式
@@ -157,6 +158,9 @@
         getCityList:"app/getCityList",
         selectCityList:"app/selectCityList"
       }),
+      ...mapMutations({
+        upadteList:'camera/upadteList'
+      }),
       CameraParentFn(e){
         this.sheetVisible=true
         this.cameraNum=e
@@ -164,7 +168,7 @@
       },
       Photograph(){
         const type=1
-      uploadImg(type).then(res=>{
+        uploadImg(type).then(res=>{
         if (res.code == 0){
           let src = '';
           if (/picture.eclicks.cn/.test(res.data.image01)) {
@@ -179,7 +183,7 @@
         }else{
           alert(res.msg);
         }
-        })
+      })
         console.log("拍照")
       },
       Album(){
@@ -196,21 +200,17 @@
         this.tabstr=values[0]
       },
       writecity_onValuesChange(picker, values) {
-        if (values[0] > values[1]) {
-        picker.setSlotValue(1, values[0]);
-        }
-       if(this.defaultCity!=values[0]){
-        this.selectCityList(values[0])
-        picker.setSlotValues(1,this.formatS_CityList)
         if(values[0]){
+          this.selectCityList(values[0])
+          picker.setSlotValues(1,this.formatS_CityList)
           this.write_City=values[0]+'--'+values[1]
+          this.defaultCity=values[0]
         }
-       }
       },
       WriteCity(){
         this.writecity_slots[0].values=this.formatCityList
         this.writecity_popupVisible=true
-        this.selectCityList('北京')
+        this.selectCityList(this.defaultCity)
         this.writecity_slots[2].values=this.formatS_CityList
       }
     }
@@ -218,4 +218,5 @@
 </script>
 <style>
   @import url("../sass/dingdan.scss");
+  @import url("../assets/fonts/iconfont.css");
 </style>
