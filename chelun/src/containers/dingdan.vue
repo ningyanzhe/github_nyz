@@ -17,8 +17,8 @@
     <div class="list">
       <div class="list_one"><div class="left">服务类型</div><div class="right" @click="changebook">{{this.tabstr}}<i class="icon iconfont icon-xiangyou"></i></div></div>
       <div class="list_one"><div class="left">当前驾照签发城市<i class="icon iconfont icon-wenhao_huabanfuben"></i></div><div class="right"><span :class="this.write_City=='请选择签发地'?'':'active'" @click="WriteCity">{{this.write_City}}</span></div></div>
-      <div class="list_one"><div class="left">可补换的签发城市<i class="icon iconfont icon-wenhao_huabanfuben"></i></div><div class="right"><span @click="WriteCity">请选择补换地</span></div></div>
-    <div class="list_one" style="border:0"><div class="left">服务费</div><div class="right"><b>￥399</b></div></div>
+      <div class="list_one"><div class="left">可补换的签发城市<i class="icon iconfont icon-wenhao_huabanfuben"></i></div><div class="right"><span :class="this.change_City=='请选择补发地'?'':'active'" @click="ChangeCity" >{{this.change_City}}</span></div></div>
+    <div class="list_one" style="border:0"><div class="left">服务费</div><div class="right"><b>￥{{this.cost}}</b></div></div>
     </div>
     <div class="lists">
       <div class="lists_vip">
@@ -36,7 +36,7 @@
       <p class="p2"><i class="icon iconfont icon-kefu"></i></p>
     </div>
     <div class="foot">
-      <div class="left">实付<b>￥399</b></div>
+      <div class="left">实付<b>￥{{this.cost}}</b></div>
       <div class="right">立即支付</div>
     </div>
     <div class="mask_camera">
@@ -71,9 +71,17 @@
     <div v-if="sheetVisible==true" class="pic_mask">
       <img :src="this.defaultImg" alt="">
     </div>
+    <div class="change_city">
+    <ChangeWrap :IsShow="IsShow" :columns1="columns1"></ChangeWrap>
+    </div>
+    <div class="daloag">
+
+    </div>
   </div>
 </template>
 <script>
+  import Vue from 'vue'
+  //mint-ui
   import {uploadImg} from '../api/index.js';
   import '../assets/fonts/iconfont'
   //引入辅助方法
@@ -81,9 +89,8 @@
   //引入样式
   import '../../node_modules/mint-ui/lib/style.css'
   import '../../node_modules/mint-ui/lib/actionsheet/index.js'
-  import { Swipe, SwipeItem, Actionsheet, Popup, Picker} from 'mint-ui';
-  import Vue from 'vue';
-
+  import { Swipe, SwipeItem, Actionsheet, Popup, Picker, MessageBox} from 'mint-ui';
+  import {bus} from '../main.js'
   Vue.component(Swipe.name, Swipe);
   Vue.component(SwipeItem.name, SwipeItem);
   Vue.component(Actionsheet.name, Actionsheet);
@@ -91,8 +98,19 @@
   Vue.component(Popup.name, Popup);
   //引入sass
   import '../sass/dingdan.scss'
+  //引入组件
+  import ChangeWrap from '../components/changewrap'
   export default {
     name: "dingdan",
+    components:{
+      ChangeWrap
+    },
+    created() {
+      window.bus.$on("replace",(val)=>{
+        this.hasChangeCity=true;
+        this.change_City=val
+      })
+    },
     data(){
       return {
         actions:[{
@@ -102,15 +120,26 @@
           name:"相册",
           method:this.Album
         }],
+        columns1:[],
+        //相机相册弹窗开关
         sheetVisible:false,
+        //补换驾照开关
         popupVisible:false,
-        defaultCity:'北京',
+        //签发默认城市
+        defaultCity:['北京','北京市'],
+        //是否选择签发城市
         hasWriteCity:false,
+        //替换文本字段
         write_City:'请选择签发地',
+        change_City:'请选择补发地',
         defaultImg:'',
-        cameraNum:1,
+        //默认切换字段
         tabstr:"换驾照",
+        //签发城市弹窗开关
         writecity_popupVisible:false,
+        //控制第二个城市列表开关
+        IsShow:false,
+        hasChangeCity:false,
         slots: [
         {
           flex: 1,
@@ -146,17 +175,20 @@
       ...mapState({
       CityList:(state)=>state.app.CityList,
       S_CityList:(state)=>state.app.S_CityList,
-      list:(state)=>state.camera.list
+      list:(state)=>state.camera.list,
+      cost:(state)=>state.app.cost
       }),
       ...mapGetters({
       formatCityList:'app/formatCityList',
-      formatS_CityList:'app/formatS_CityList'
+      formatS_CityList:'app/formatS_CityList',
+      formatCityLists:'app/formatCityLists'
       })
     },
     methods:{
       ...mapActions({
         getCityList:"app/getCityList",
-        selectCityList:"app/selectCityList"
+        selectCityList:"app/selectCityList",
+        ChangeSelectCity:'app/ChangeSelectCity'
       }),
       ...mapMutations({
         upadteList:'camera/upadteList'
@@ -204,14 +236,27 @@
           this.selectCityList(values[0])
           picker.setSlotValues(1,this.formatS_CityList)
           this.write_City=values[0]+'--'+values[1]
-          this.defaultCity=values[0]
+          this.defaultCity=[values[0],values[1]]
         }
       },
+      //点击签发城市选择
       WriteCity(){
         this.writecity_slots[0].values=this.formatCityList
         this.writecity_popupVisible=true
-        this.selectCityList(this.defaultCity)
+        this.hasWriteCity=true
+        this.selectCityList(this.defaultCity[0])
         this.writecity_slots[2].values=this.formatS_CityList
+      },
+      //点击补换城市选择
+      ChangeCity(){
+        if(this.hasWriteCity){
+        this.IsShow=this.IsShow==true?false:true
+        this.ChangeSelectCity(this.defaultCity)
+          this.columns1=this.formatCityLists
+          window.bus.$emit("changelist",[222])
+        }else{
+          MessageBox('提示', '请先选择签发城市');
+        }
       }
     }
   }
