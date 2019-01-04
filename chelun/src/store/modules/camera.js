@@ -7,19 +7,24 @@ const path=require("path")
 const state={
   list:[{
     text:"身份证正面",
-    img:s1
+    img:s1,
+    pic:""
   },{
     text:"身份证反面",
-    img:s2
+    img:s2,
+    pic:""
   },{
     text:"驾驶证正件",
-    img:s3
+    img:s3,
+    pic:""
   },{
     text:"驾驶证附件",
-    img:s4
+    img:s4,
+    pic:""
   },{
     text:"白底半身照",
-    img:phone
+    img:phone,
+    pic:""
   }]
 }
 
@@ -29,7 +34,7 @@ const getters={
 
 const mutations={
   upadteList(state, payload){
-    state[payload.index].img = payload.img
+    state.list[payload.index].pic=payload.src
   }
 }
 

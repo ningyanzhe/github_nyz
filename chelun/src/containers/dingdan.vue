@@ -8,11 +8,13 @@
         </mt-swipe>
     </div>
     <div class="camera">
-      <div class="camera_one" @click="CameraParentFn(1)"><i class="icon iconfont icon-tianjia"></i><p>身份证正面</p></div>
-      <div class="camera_one" @click="CameraParentFn(2)"><i class="icon iconfont icon-tianjia"></i><p>身份证反面</p></div>
-      <div class="camera_one" @click="CameraParentFn(3)"><i class="icon iconfont icon-tianjia"></i><p>驾驶证正件</p></div>
-      <div class="camera_one" @click="CameraParentFn(4)"><i class="icon iconfont icon-tianjia"></i><p>驾驶证附件</p></div>
-      <div class="camera_one" @click="CameraParentFn(5)"><i class="icon iconfont icon-tianjia"></i><p>白底半身照</p></div>
+      <div v-for="(item,index) in list" class="camera_one" @click="CameraParentFn(index)">
+        <div class="child">
+          <img v-if="item.pic" :src="item.pic">
+          <i v-if="!item.pic" class="icon iconfont icon-tianjia"></i>
+        </div>
+        <p>{{item.text}}</p>
+      </div>
     </div>
     <div class="list">
       <div class="list_one"><div class="left">服务类型</div><div class="right" @click="changebook">{{this.tabstr}}<i class="icon iconfont icon-xiangyou"></i></div></div>
@@ -32,7 +34,7 @@
       <div class="lists_marny"><div class="left">优惠</div><div class="right">无优惠劵可用<i class="icon iconfont icon-xiangyou"></i></div></div>
     </div>
     <div class="end">
-      <p class="p1"><a href="#">常见问题？</a></p>
+      <p class="p1" @click="go_question">常见问题?</p>
       <p class="p2"><i class="icon iconfont icon-kefu"></i></p>
     </div>
     <div class="foot">
@@ -77,9 +79,13 @@
     <div class="daloag">
 
     </div>
+    <div :class="isshow_question?'question_wrap':'question_none'">
+      <Question></Question>
+    </div>
   </div>
 </template>
 <script>
+  import Question from '../components/question'
   import Vue from 'vue'
   //mint-ui
   import {uploadImg} from '../api/index.js';
@@ -103,12 +109,16 @@
   export default {
     name: "dingdan",
     components:{
-      ChangeWrap
+      ChangeWrap,
+      Question
     },
     created() {
       window.bus.$on("replace",(val)=>{
         this.hasChangeCity=true;
         this.change_City=val
+      })
+      window.bus.$on('go_back',()=>{
+        this.isshow_question=false
       })
     },
     data(){
@@ -135,11 +145,13 @@
         defaultImg:'',
         //默认切换字段
         tabstr:"换驾照",
+        clickindex:0,
         //签发城市弹窗开关
         writecity_popupVisible:false,
         //控制第二个城市列表开关
         IsShow:false,
         hasChangeCity:false,
+        isshow_question:false,
         slots: [
         {
           flex: 1,
@@ -185,39 +197,59 @@
       })
     },
     methods:{
+      go_question(){
+        this.isshow_question=true
+      },
       ...mapActions({
         getCityList:"app/getCityList",
         selectCityList:"app/selectCityList",
         ChangeSelectCity:'app/ChangeSelectCity'
       }),
       ...mapMutations({
-        upadteList:'camera/upadteList'
+        updateList:'camera/upadteList'
       }),
       CameraParentFn(e){
         this.sheetVisible=true
         this.cameraNum=e
-        this.defaultImg=this.list[e-1].img
+        this.clickindex=e
+        this.defaultImg=this.list[e].img
       },
-      Photograph(){
+
+      async Photograph(){
         const type=1
-        uploadImg(type).then(res=>{
-        if (res.code == 0){
-          let src = '';
-          if (/picture.eclicks.cn/.test(res.data.image01)) {
-              src = res.data.image01.replace('http://', '//');
-          } else {
-              src = '//picture.eclicks.cn/' + res.data.image01;
-          }
-          this.updataList({
-            src,
-            index: this.list.findIndex(item=>item==this.current)
-          })
-        }else{
-          alert(res.msg);
-        }
-      })
-        console.log("拍照")
-      },
+      let res = await uploadImg(type);
+      console.log("res",res)
+      if (res.result == 1){
+        this.updateList({
+          src: res.data.url,
+          index: this.clickindex
+        })
+        this.showMask = false;
+      }else{
+        alert('上传图片失败');
+      }
+    },
+      // Photograph(){
+      //   const type=1
+      // //   uploadImg(type).then(res=>{
+      // //   if (res.code == 0){
+      // //     let src = '';
+      // //     if (/picture.eclicks.cn/.test(res.data.image01)) {
+      // //         src = res.data.image01.replace('http://', '//');
+      // //     } else {
+      // //         src = '//picture.eclicks.cn/' + res.data.image01;
+      // //     }
+      // //     this.updataList({
+      // //       src,
+      // //       index: this.list.findIndex(item=>item==this.current)
+      // //     })
+      // //   }else{
+      // //     alert(res.msg);
+      // //   }
+      // // })
+      
+      //   console.log("拍照",this.clickindex)
+      // },
       Album(){
         console.log("相册")
       },

@@ -24,8 +24,20 @@
       align-items: center;
       padding:.2rem .1rem;
       box-sizing: border-box;
+      .child{
+          width:1.2rem;
+          height:.8rem;
+          border:2px solid black;
+          text-align: center;
+          line-height: .8rem;
+          border-radius: .12rem;
+          img{
+            width:100%;
+            height:100%;
+          }
+      }
       i.icon{
-        font-size:.8rem;
+        font-size:.6rem;
       }
       p{
         padding:0 .1rem;
@@ -255,4 +267,21 @@
 }
 .van-picker__toolbar{
   background: #eee;
+}
+.question_none{
+  display: none;
+  z-index:-9;
+}
+.question_wrap{
+  margin:0;
+  padding:0;
+  height:100%;
+  width:100%;
+  position: fixed;
+  left:0;
+  top:0;
+  z-index:99;
+  background: white;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }

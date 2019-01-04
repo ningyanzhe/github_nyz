@@ -106,7 +106,6 @@ const actions={
     axios.get(`https://chezhu.eclicks.cn/ExchangeJiaZhao/getCostList?order_type=1&city_id=${two}&province_id=${one}`)
     .then(res=>{
       this.state.app.CityLists=res.data.data
-      console.log("res",res.data.data)
     })
   },
   S_ChangeSelectCity({commit},action){
