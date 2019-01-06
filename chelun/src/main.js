@@ -6,6 +6,9 @@ import routes from './router/config'
 import VueRouter from 'vue-router'
 window.bus=new Vue()
 Vue.use(VueRouter)
+// 引入echarts
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts 
 
 const router=new VueRouter({
   routes:routes

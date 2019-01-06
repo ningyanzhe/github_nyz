@@ -2,25 +2,35 @@ import Dingdan from '../containers/dingdan'
 import Shouhuo from '../containers/shouhuo'
 import Banli from '../containers/banli'
 import Wancheng  from '../containers/wancheng'
+import Echarts from '../containers/echarts'
+import Chelun from "../containers/chelun"
 
 export default [{
   path:"/",
-  name:"dingdan",
-  redirect:"/dingdan"
+  redirect:"/chelun"
 },{
-    path:"/dingdan",
+  path:"/chelun",
+  component:Chelun,
+  redirect:'/chelun/dingdan',
+  children:[{
+    path:"/chelun/dingdan",
     name:"dingdan",
     component:Dingdan
   },{
-    path:"/shouhuo",
-    name:"shouhuo",
+    path:"/chelun/shouhuo",
+    name:"Shouhuo",
     component:Shouhuo
   },{
-    path:"/banli",
-    name:"banli",
+    path:"/chelun/banli",
+    name:"Banli",
     component:Banli
   },{
-    path:"/wancheng",
-    name:"wancheng",
+    path:"/chelun/wancheng",
+    name:"Wancheng",
     component:Wancheng
+  }]
+},{
+    path:"/echarts",
+    name:"Echarts",
+    component:Echarts
   }]

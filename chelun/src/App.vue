@@ -1,13 +1,6 @@
 <template>
   <div id="app">
     <div class="content">
-      <div class="TabNav">
-        <div class="Tabactive">提交订单</div>
-        <div>填写收货地址</div>
-        <div>正在办理</div>
-        <div>办理完成</div>
-      </div>
-      <!-- <button @click="login">登陆</button> -->
       <router-view></router-view>
     </div>
   </div>
@@ -23,14 +16,14 @@
       }
     },
     methods: {
-      login() {
-        //登录
-        chelunJSBridge.invoke('app', 'login', {
-          loginCallBackName: res => {
-            console.log('res...', res);
-          }
-        });
-      }
+      // login() {
+      //   //登录
+      //   chelunJSBridge.invoke('app', 'login', {
+      //     loginCallBackName: res => {
+      //       console.log('res...', res);
+      //     }
+      //   });
+      // }
     }
   }
 </script>
