@@ -4,6 +4,7 @@ const state={
   num:1000,
   CityList:[],
   S_CityList:[],
+  S_CityList2:[],
   CityLists:[],
   C_CityLists:[],
   cost:0
@@ -85,6 +86,25 @@ const actions={
           state.S_CityList=arr;
         }else{
           state.S_CityList=v.list
+        }
+      }
+    })
+  },
+  selectCityList2({commit},action){
+    state.CityList.map((v)=>{
+      if(v.name==action){
+        if(v.list.length<=1){
+          let arr=[]
+          v.list[0].list.map((vv)=>{
+            arr.push(vv.name)
+          })
+          state.S_CityList2=arr;
+        }else{
+          let arr=[]
+          v.list.map((vv)=>{
+            arr.push(vv.name)
+          })
+          state.S_CityList2=arr
         }
       }
     })

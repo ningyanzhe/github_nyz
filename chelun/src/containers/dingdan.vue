@@ -39,7 +39,7 @@
     </div>
     <div class="foot">
       <div class="left">实付<b>￥{{this.cost}}</b></div>
-      <div class="right">立即支付</div>
+      <div class="right" @click="go_nextpage">立即支付</div>
     </div>
     <div class="mask_camera">
         <mt-actionsheet
@@ -107,7 +107,7 @@
   //引入组件
   import ChangeWrap from '../components/changewrap'
   export default {
-    name: "dingdan",
+    name: "Dingdan",
     components:{
       ChangeWrap,
       Question
@@ -150,6 +150,7 @@
         writecity_popupVisible:false,
         //控制第二个城市列表开关
         IsShow:false,
+        //是否选择补发城市
         hasChangeCity:false,
         isshow_question:false,
         slots: [
@@ -194,7 +195,25 @@
       formatCityList:'app/formatCityList',
       formatS_CityList:'app/formatS_CityList',
       formatCityLists:'app/formatCityLists'
-      })
+      }),
+      ComputedHasAll(){
+        // if(this.hasWriteCity && this.hasChangeCity){
+        //   let num=0;
+        //   this.list.map((v)=>{
+        //     if(v.pic){
+        //       num=num*1+1*1
+        //     }
+        //   })
+        //   if(num==5){
+        //     return true
+        //   }else{
+        //     return false
+        //   }
+        // }else{
+        //   return false
+        // }
+        return true
+      }
     },
     methods:{
       go_question(){
@@ -229,27 +248,6 @@
         alert('上传图片失败');
       }
     },
-      // Photograph(){
-      //   const type=1
-      // //   uploadImg(type).then(res=>{
-      // //   if (res.code == 0){
-      // //     let src = '';
-      // //     if (/picture.eclicks.cn/.test(res.data.image01)) {
-      // //         src = res.data.image01.replace('http://', '//');
-      // //     } else {
-      // //         src = '//picture.eclicks.cn/' + res.data.image01;
-      // //     }
-      // //     this.updataList({
-      // //       src,
-      // //       index: this.list.findIndex(item=>item==this.current)
-      // //     })
-      // //   }else{
-      // //     alert(res.msg);
-      // //   }
-      // // })
-      
-      //   console.log("拍照",this.clickindex)
-      // },
       Album(){
         console.log("相册")
       },
@@ -288,6 +286,16 @@
           window.bus.$emit("changelist",[222])
         }else{
           MessageBox('提示', '请先选择签发城市');
+        }
+      },
+      //点击支付
+      go_nextpage(){
+        if(this.ComputedHasAll){
+          this.$router.push({
+            path:"/chelun/shouhuo"
+          })
+        }else{
+          alert('请填写完整信息')
         }
       }
     }

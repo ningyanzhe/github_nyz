@@ -1,0 +1,154 @@
+.shouhuo_wrap{
+  width:100%;
+  height:100%;
+  .top_box{
+    width:100%;
+    height:.6rem;
+    background: #eee;
+    text-align: center;
+    line-height: .6rem;
+  }
+  .bot_box{
+    width:100%;
+    height:1rem;
+    background: #bbb;
+    position: fixed;
+    left:0;
+    bottom:0;
+    text-align: center;
+    line-height: 1rem;
+    color:white;
+    font-size:.36rem;
+  }
+  .list_box{
+    width:100%;
+    p{
+      width:100%;
+      height:.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding:0 .2rem;
+      box-sizing: border-box;
+      position: relative;
+      span{
+        font-size: .32rem;
+        margin-right:1rem;
+      }
+      input{
+        padding-left:1.2rem;
+        border:none;
+        background: none;
+      }
+    }
+    @media screen and (-webkit-min-device-pixel-ratio: 2){
+      p::after{
+        content: '';
+        width:100%;
+        height:1px;
+        background: black;
+        position: absolute;
+        -webkit-transform: scaleY(0.5);
+        left:0;
+        bottom: 0;
+      }
+    }
+    @media screen and (-webkit-min-device-pixel-ratio: 3){
+      p::after{
+        content: '';
+        width:100%;
+        height:1px;
+        background: black;
+        position: absolute;
+        -webkit-transform: scaleY(0.33);
+        left:0;
+        bottom: 0;
+      }
+    }
+  }
+  .btn_box{
+    width:1rem;
+    height:2.5rem;
+    position: fixed;
+    right:.6rem;
+    bottom:1.6rem;
+    .kefu{
+      width:100%;
+      height:auto;
+      img{
+        width:100%;
+        height:auto;
+      }
+    }
+    .hongbao{
+      width:100%;
+      height:auto;
+      img{
+        width:100%;
+        height:auto;
+      }
+    }
+  }
+  .popup_wrap{
+    width:100%;
+    height:100%;
+    display: flex;
+    padding:0 .2rem;
+    box-sizing: border-box;
+    flex-direction: column;
+    span{
+      color:#aaa;
+    }
+    img{
+      width:100%;
+      height:auto;
+    }
+    .end{
+      width:100%;
+      height:auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: .2rem;
+      button{
+        width:2rem;
+        height:.8rem;
+        border-radius: .1rem;
+        border:none;
+      }
+      .no{
+        background: #bbb;
+        color:white;
+      }
+      .yes{
+        background: dodgerblue;
+        color:white;
+      }
+    }
+  }
+  .van-popup{
+    width:70%;
+    border-radius: .3rem;
+  }
+  .citylist .van-popup{
+    width:100%;
+    border-radius: 0;
+  }
+  .nav_box{
+    background: #ddd;
+    width:100%;
+    height:.8rem;
+    padding:0 .2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+  }
+}
+.hide{
+  display: none;
+}
+.show{
+  display: block;
+  color:green;
+}
