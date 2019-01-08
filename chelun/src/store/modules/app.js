@@ -51,9 +51,6 @@ const getters={
 const mutations={
   change:(state,action)=>{
     state.num=action.payload=='+'?state.num+1:state.num-1
-  },
-  citylist:(state,action)=>{
-
   }
 }
 
