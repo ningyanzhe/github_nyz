@@ -13,6 +13,8 @@ import News from '../containers/echarts/news'
 import Mans from '../containers/echarts/mans'
 import Shop from '../containers/echarts/shop'
 import Biglist from '../containers/echarts/biglist'
+//canvas
+import Canvas from '../containers/canvas'
 
 export default [{
   path:"/",
@@ -67,4 +69,7 @@ export default [{
       path:"/echarts",
       redirect:"/echarts/index"
     }]
+  },{
+    path:"/canvas",
+    component:Canvas
   }]

@@ -197,22 +197,21 @@
       formatCityLists:'app/formatCityLists'
       }),
       ComputedHasAll(){
-        // if(this.hasWriteCity && this.hasChangeCity){
-        //   let num=0;
-        //   this.list.map((v)=>{
-        //     if(v.pic){
-        //       num=num*1+1*1
-        //     }
-        //   })
-        //   if(num==5){
-        //     return true
-        //   }else{
-        //     return false
-        //   }
-        // }else{
-        //   return false
-        // }
-        return true
+        if(this.hasWriteCity && this.hasChangeCity){
+          let num=0;
+          this.list.map((v)=>{
+            if(v.pic){
+              num=num*1+1*1
+            }
+          })
+          if(num==5){
+            return true
+          }else{
+            return false
+          }
+        }else{
+          return false
+        }
       }
     },
     methods:{
