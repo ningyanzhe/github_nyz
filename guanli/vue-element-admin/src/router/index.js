@@ -101,6 +101,19 @@ export const constantRouterMap = [
         meta: { title: 'guide', icon: 'guide', noCache: true }
       }
     ]
+  },
+  {
+    path: '/list',
+    component: Layout,
+    redirect: '/list/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/list/index'),
+        name: 'List',
+        meta: { title: 'list', icon: 'book', noCache: true }
+      }
+    ]
   }
 ]
 

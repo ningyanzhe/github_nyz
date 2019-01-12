@@ -1,5 +1,7 @@
 import { loginByUsername, logout, getUserInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+import { Message } from 'element-ui'
+import md5 from 'md5';
 
 const user = {
   state: {
@@ -48,12 +50,27 @@ const user = {
     LoginByUsername({ commit }, userInfo) {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
-        loginByUsername(username, userInfo.password).then(response => {
-          const data = response.data
-          commit('SET_TOKEN', data.token)
-          setToken(response.data.token)
-          resolve()
+        loginByUsername(username, md5(userInfo.password+'1605A')).then(response => {
+          console.log(1)
+          let {data} = response;
+          if (data.code == 1){
+            console.log(2)
+            commit('SET_TOKEN', response.data.data.token)
+            setToken(response.data.data.token)
+            resolve()
+
+            // 设置权限,用户名,头像,简介
+            commit('SET_ROLES', ['admin'])
+            commit('SET_NAME', '宁燕哲')
+            commit('SET_AVATAR', 'https://avatars1.githubusercontent.com/u/8192412?s=460&v=4')
+            commit('SET_INTRODUCTION', 'data.introduction')
+          }else{
+            console.log(3)
+            reject(response.data.msg)
+            Message.error(response.data.msg)
+          }
         }).catch(error => {
+          console.log(4)
           reject(error)
         })
       })
@@ -63,15 +80,19 @@ const user = {
     GetUserInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
         getUserInfo(state.token).then(response => {
+          console.log(5)
           // 由于mockjs 不支持自定义状态码只能这样hack
           if (!response.data) {
+            console.log(6)
             reject('Verification failed, please login again.')
           }
           const data = response.data
 
           if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
+            console.log(7)
             commit('SET_ROLES', data.roles)
           } else {
+            console.log(8)
             reject('getInfo: roles must be a non-null array!')
           }
 
@@ -80,6 +101,7 @@ const user = {
           commit('SET_INTRODUCTION', data.introduction)
           resolve(response)
         }).catch(error => {
+          console.log(9)
           reject(error)
         })
       })
@@ -124,6 +146,7 @@ const user = {
 
     // 动态修改权限
     ChangeRoles({ commit, dispatch }, role) {
+      console.log(10)
       return new Promise(resolve => {
         commit('SET_TOKEN', role)
         setToken(role)

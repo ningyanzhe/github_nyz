@@ -1,12 +1,13 @@
 import request from '@/utils/request'
 
 export function loginByUsername(username, password) {
+  console.log("login")
   const data = {
     username,
     password
   }
   return request({
-    url: '/login/login',
+    url: '/users/login',
     method: 'post',
     data
   })
